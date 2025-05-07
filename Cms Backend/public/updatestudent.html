@@ -74,6 +74,8 @@
         const data = await response.json();
         if (response.ok) {
           alert('Student updated successfully!');
+          window.location.href = '/updatestudent.html';
+
         } else {
           alert('Error: ' + (data.message || data.error || 'Unknown error'));
           console.error('Server Response:', data);

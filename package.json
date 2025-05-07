@@ -17,5 +17,10 @@
     "express-session": "^1.18.1",
     "mongoose": "^8.13.2"
   },
-  "description": ""
+  "description": "",
+  "devDependencies": {
+    "cypress": "^14.3.3",
+    "mocha": "^11.2.2",
+    "mochawesome": "^7.1.3"
+  }
 }
