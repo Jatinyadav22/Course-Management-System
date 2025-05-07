@@ -49,7 +49,10 @@ app.get('/student', (req, res) => {
   // Ensure that student.html is in the 'public' directory
   res.sendFile(path.join(__dirname, 'public', 'student.html'));
 });
-
+app.get('/', (req, res) => {
+  // Ensure that student.html is in the 'public' directory
+  res.sendFile(path.join(__dirname, 'public', 'login.html'));
+});
 // Route for serving the faculty dashboard page (faculty.html)
 app.get('/faculty', (req, res) => {
   // Ensure that faculty.html is in the 'public' directory
