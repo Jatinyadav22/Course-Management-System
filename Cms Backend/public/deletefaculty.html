@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Delete Faculty</title>
+  
+  <link rel="stylesheet" href="deletefaculty.css" />
+  <div class="form-nav">
+    <a href="createfaculty.html">Create Faculty</a>
+    <a href="updatefaculty.html">Update Faculty</a>
+    <a href="deletefaculty.html">Delete Faculty</a>
+    <!-- <a href="login.html">Login</a> -->
+  </div>
+
+  
+  
+</head>
+<body>
+  <div class="form-container">
+    <h2>Delete Faculty</h2>
+    <form id="deleteForm">
+      <input type="text" placeholder="Faculty ID to Delete" name="id" required />
+      <button type="submit">Delete</button>
+    </form>
+  </div>
+
+  <script>
+    document.getElementById('deleteForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const formData = new FormData(e.target);
+      const { id } = Object.fromEntries(formData.entries());
+
+      const res = await fetch(`/api/faculty/${id}`, {
+        method: 'DELETE'
+      });
+
+      const result = await res.json();
+      alert(result.message);
+    });
+  </script>
+</body>
+</html>

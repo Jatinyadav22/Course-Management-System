@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Faculty Dashboard - CourseSphere</title>
+  <link rel="stylesheet" href="faculty.css" />
+</head>
+<body>
+  <header>
+    <div class="logo">CourseSphere</div>
+    <nav>
+      <ul>
+        <li>Institute</li>
+        <li>Academic Schedule</li>
+        <li>Academic Functions</li>
+        <li>Contact Mentor</li>
+        <li>Contact Support</li>
+      </ul>
+    </nav>
+    <div class="profile" id="facultyHeaderName">Loading...</div>
+  </header>
+
+  <main>
+    <aside class="sidebar">
+      <div class="profile-card">
+        <div class="profile-pic" id="profilePic"></div>
+        <h2 id="facultyName">Loading...</h2>
+        <p id="facultyDesignation">Designation: Loading...</p>
+        <p id="facultyDepartment">Department: Loading...</p>
+      </div>
+      <nav class="menu">
+        <ul>
+          <li>Dashboard</li>
+          <li>Profile</li>
+          <li>Assigned Courses</li>
+          <li>Manage Assignments</li>
+          <li>Evaluate Submissions</li>
+          <li>Schedule Exams</li>
+          <li>Manage Grades</li>
+          <li>Class Curriculum</li>
+          <li>Updates</li>
+        </ul>
+      </nav>
+    </aside>
+
+    <section class="content">
+      <div class="cards">
+        <div class="card red" id="announcementCard">Announcement<br>-----</div>
+        <div class="card gold" id="evaluationsCard">Evaluations<br>-----</div>
+        <div class="card blue" id="attendanceCard">Attendance<br>-----</div>
+        <div class="card green" id="updatesCard">Updates<br><ul id="updatesList">-----</ul></div> <!-- Updates as Bullet Points -->
+        <div class="card purple" id="coursesCard">Courses<br><ul id="coursesList">-----</ul></div> <!-- Courses as Bullet Points -->
+      </div>
+    </section>
+  </main>
+
+  <script>
+    window.onload = async function () {
+      const facultyId = localStorage.getItem('facultyId');
+
+      if (!facultyId) {
+        alert("You are not logged in! Please log in first.");
+        window.location.href = '/loginfaculty.html';
+        return;
+      }
+
+      try {
+        const response = await fetch(`http://localhost:5000/api/faculty/${facultyId}`);
+        const facultyData = await response.json();
+
+        if (response.ok) {
+          console.log("Faculty Data:", facultyData);
+
+          // Header and Sidebar Info
+          document.getElementById('facultyName').textContent = facultyData.name || 'No name available';
+          document.getElementById('facultyHeaderName').textContent = facultyData.name || 'Faculty';
+          document.getElementById('facultyDesignation').textContent = `Designation: ${facultyData.designation || 'N/A'}`;
+          document.getElementById('facultyDepartment').textContent = `Department: ${facultyData.department || 'N/A'}`;
+
+          // Profile picture (optional)
+          if (facultyData.profilePic) {
+            const profilePic = document.getElementById('profilePic');
+            profilePic.style.backgroundImage = `url(${facultyData.profilePic})`;
+            profilePic.style.backgroundSize = 'cover';
+            profilePic.style.backgroundPosition = 'center';
+          } else {
+            document.getElementById('profilePic').style.backgroundColor = '#ccc';
+          }
+
+          // Cards content
+          document.getElementById('announcementCard').innerHTML = `Announcement<br>${facultyData.announcement || 'No new announcements'}`;
+          document.getElementById('evaluationsCard').innerHTML = `Evaluations<br>${facultyData.evaluations || 'None available'}`;
+          document.getElementById('attendanceCard').innerHTML = `Attendance<br>${facultyData.attendance || 'Not tracked yet'}`;
+
+          // Updates card content (Bullet Points)
+          const updatesText = Array.isArray(facultyData.updates) && facultyData.updates.length
+            ? facultyData.updates.map(update => `<li>${update}</li>`).join('')
+            : '<li>No recent updates</li>';
+
+          document.getElementById('updatesList').innerHTML = updatesText;
+
+          // Courses card content (Bullet Points)
+          const coursesText = Array.isArray(facultyData.courses) && facultyData.courses.length
+            ? facultyData.courses.map(course => `<li>${course}</li>`).join('')
+            : '<li>Courses: N/A</li>';
+
+          document.getElementById('coursesList').innerHTML = coursesText;
+        } else {
+          alert("Error fetching faculty data: " + facultyData.message);
+        }
+      } catch (error) {
+        console.error('Error fetching faculty data:', error);
+        alert('An error occurred while loading the dashboard.');
+      }
+    };
+  </script>
+</body>
+</html>

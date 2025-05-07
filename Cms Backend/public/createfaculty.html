@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Create Faculty</title>
+  <link rel="stylesheet" href="createfaculty.css" />
+  <!-- <link rel="stylesheet" href="form-pages.css" /> -->
+
+</head>
+<body>
+  <!-- Navigation -->
+  <div class="form-nav">
+    <a href="createfaculty.html">Create Faculty</a>
+    <a href="updatefaculty.html">Update Faculty</a>
+    <a href="deletefaculty.html">Delete Faculty</a>
+    <a href="login.html">Login</a>
+  </div>
+
+  <div class="form-container">
+    <h2>Create Faculty</h2>
+    <form id="createForm">
+      <input type="text" placeholder="Name" name="name" required />
+      <input type="email" placeholder="Email" name="email" required />
+      <input type="password" placeholder="Password" name="password" required />
+      <input type="text" placeholder="Department" name="department" required />
+      <input type="text" placeholder="Designation" name="designation" required />
+
+      <!-- Add Courses -->
+      <input type="text" placeholder="Courses (comma separated)" name="courses" />
+
+      <!-- Add Updates -->
+      <textarea placeholder="Updates (each on new line)" name="updates" rows="4" style="resize: vertical;"></textarea>
+
+      <button type="submit">Create</button>
+    </form>
+  </div>
+
+  <script>
+    document.getElementById('createForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const formData = new FormData(e.target);
+      const data = Object.fromEntries(formData.entries());
+
+      // Convert courses string to array
+      if (data.courses) {
+        data.courses = data.courses.split(',').map(c => c.trim());
+      }
+
+      // Convert updates to array (each line becomes one update)
+      if (data.updates) {
+        data.updates = data.updates.split('\n').map(u => u.trim()).filter(Boolean);
+      }
+
+      const res = await fetch('/api/faculty', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+
+      const result = await res.json();
+      alert(result.message);
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delete Student</title>
+    
+    <link rel="stylesheet" href="deletestudent.css" />
+    <div class="form-nav">
+        <a href="createstudent.html">Create Student</a>
+        <a href="updatestudent.html">Update Student</a>
+        <a href="deletestudent.html">Delete Student</a>
+        <!-- <a href="login.html">Login</a> -->
+      </div>
+
+</head>
+<body>
+    <h1>Delete Student</h1>
+    <form id="deleteStudentForm">
+        <label for="id">Student ID:</label>
+        <input type="text" id="id" name="id" required><br><br>
+
+        <button type="submit">Delete Student</button>
+    </form>
+
+    <script>
+        document.getElementById('deleteStudentForm').addEventListener('submit', async (e) => {
+            e.preventDefault(); // Prevent form from submitting normally
+
+            const studentId = document.getElementById('id').value;
+
+            try {
+                const response = await fetch(`http://localhost:5000/api/students/${studentId}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                });
+
+                const data = await response.json();
+                if (response.ok) {
+                    alert('Student deleted successfully!');
+                    window.location.href = '/html/deleteStudent.html'; // Redirect after successful deletion
+                } else {
+                    alert('Error: ' + data.message);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('An error occurred while deleting the student.');
+            }
+        });
+    </script>
+</body>
+</html>

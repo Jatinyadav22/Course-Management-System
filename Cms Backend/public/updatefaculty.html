@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Update Faculty</title>
+  <link rel="stylesheet" href="updatefaculty.css" />
+</head>
+<body>
+  <!-- Navigation -->
+  <div class="form-nav">
+    <a href="createfaculty.html">Create Faculty</a>
+    <a href="updatefaculty.html">Update Faculty</a>
+    <a href="deletefaculty.html">Delete Faculty</a>
+    <a href="login.html">Login</a>
+  </div>
+
+  <div class="form-container">
+    <h2>Update Faculty</h2>
+
+    <form id="updateFacultyForm">
+      <input type="email" id="email" name="email" placeholder="Email (to identify faculty)" required />
+
+      <input type="text" id="name" name="name" placeholder="New Name (optional)" />
+      <input type="password" id="password" name="password" placeholder="New Password (optional)" />
+      <input type="text" id="department" name="department" placeholder="New Department (optional)" />
+      <input type="text" id="designation" name="designation" placeholder="New Designation (optional)" />
+      <input type="text" id="courses" name="courses" placeholder="New Courses (comma separated, optional)" />
+      
+      <textarea id="updates" name="updates" rows="4" placeholder="New Updates (each on new line, optional)" style="resize: vertical;"></textarea>
+
+      <button type="submit">Update Faculty</button>
+    </form>
+  </div>
+
+  <script>
+    document.getElementById('updateFacultyForm').addEventListener('submit', async function (e) {
+      e.preventDefault();
+
+      const email = document.getElementById('email').value.trim();
+      const updateData = {};
+
+      const name = document.getElementById('name').value.trim();
+      const password = document.getElementById('password').value.trim();
+      const department = document.getElementById('department').value.trim();
+      const designation = document.getElementById('designation').value.trim();
+      const courses = document.getElementById('courses').value.trim();
+      const updates = document.getElementById('updates').value.trim();
+
+      if (name) updateData.name = name;
+      if (password) updateData.password = password;
+      if (department) updateData.department = department;
+      if (designation) updateData.designation = designation;
+      if (courses) updateData.courses = courses.split(',').map(c => c.trim());
+      if (updates) updateData.updates = updates.split('\n').map(u => u.trim()).filter(Boolean);
+
+      try {
+        const res = await fetch(`/api/faculty/email/${encodeURIComponent(email)}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(updateData)
+        });
+
+        const result = await res.json();
+        alert(result.message);
+      } catch (error) {
+        console.error('Error updating faculty:', error);
+        alert('An error occurred while updating faculty.');
+      }
+    });
+  </script>
+</body>
+</html>

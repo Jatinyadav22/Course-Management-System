@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title> Student Login</title>
+  
+  <link rel="stylesheet" href="login.css" />
+  <div class="form-nav">
+    <a href="createstudent.html">Create Student</a>
+    <a href="updatestudent.html">Update Student</a>
+    <a href="deletestudent.html">Delete Student</a>
+    <a href="loginfaculty.html">Faculty Login</a>
+  </div>
+
+</head>
+<body>
+  <h1>Student Login</h1>
+  <form id="loginForm">
+    <label for="email">Email:</label>
+    <input type="email" id="email" name="email" required><br><br>
+
+    <label for="password">Password:</label>
+    <input type="password" id="password" name="password"><br><br>
+
+    <button type="submit">Login</button>
+  </form>
+
+  <script>
+    document.getElementById('loginForm').addEventListener('submit', async (e) => {
+      e.preventDefault(); // Prevent form from submitting normally
+
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+
+      // Sending login request to the backend
+      try {
+        const response = await fetch('http://localhost:5000/api/students/login', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ email, password }),
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+          alert('Login successful');
+          
+          // Store the student session info (studentId) in localStorage or a cookie
+          localStorage.setItem('studentId', data.student._id);  // Store student ID for session
+
+          // Redirect to the dashboard or another page after successful login
+          window.location.href = '/student.html';  // Replace '/dashboard.html' with your actual dashboard page
+        } else {
+          alert('Login failed: ' + data.error);
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        alert('An error occurred while logging in.');
+      }
+    });
+  </script>
+</body>
+</html>

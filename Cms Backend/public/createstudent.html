@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Create Student</title>
+  <link rel="stylesheet" href="createstudent.css" />
+</head>
+<body>
+  <!-- Navigation -->
+  <div class="form-nav">
+    <a href="createstudent.html">Create Student</a>
+    <a href="updatestudent.html">Update Student</a>
+    <a href="deletestudent.html">Delete Student</a>
+    <a href="login.html">Login</a>
+  </div>
+
+  <div class="form-container">
+    <h2>Create New Student</h2>
+
+    <form id="createStudentForm">
+      <label for="name">Name:</label>
+      <input type="text" id="name" name="name" required />
+
+      <label for="rollNumber">Roll Number:</label>
+      <input type="text" id="rollNumber" name="rollNumber" required />
+
+      <label for="email">Email:</label>
+      <input type="email" id="email" name="email" required />
+
+      <label for="course">Course:</label>
+      <input type="text" id="course" name="course" required />
+
+      <label for="year">Year:</label>
+      <input type="number" id="year" name="year" required />
+
+      <label for="attendance">Attendance (optional):</label>
+      <input type="number" id="attendance" name="attendance" placeholder="e.g. 0, 50, 75" min="0" max="100" />
+
+      <label for="grades">Grades (optional):</label>
+      <input type="text" id="grades" name="grades" placeholder="e.g. Math: A, Science: B" />
+
+      <button type="submit">Create Student</button>
+    </form>
+  </div>
+
+  <script>
+    document.getElementById('createStudentForm').addEventListener('submit', async function (e) {
+      e.preventDefault();
+
+      const gradesInput = document.getElementById('grades').value.trim();
+      let grades = [];
+
+      if (gradesInput) {
+        grades = gradesInput.split(',').map(item => {
+          const [subject, gradeValue] = item.split(':');
+          return {
+            subject: subject.trim(),
+            grade: gradeValue.trim()
+          };
+        });
+      }
+
+      const studentData = {
+        name: document.getElementById('name').value,
+        rollNumber: document.getElementById('rollNumber').value,
+        email: document.getElementById('email').value,
+        course: document.getElementById('course').value,
+        year: parseInt(document.getElementById('year').value),
+        attendance: document.getElementById('attendance').value
+          ? parseInt(document.getElementById('attendance').value)
+          : 0,
+        grades: grades
+      };
+
+      try {
+        const response = await fetch('http://localhost:5000/api/students', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(studentData),
+        });
+
+        const result = await response.json();
+        if (response.ok) {
+          alert('Student created successfully!');
+          // window.location.href = '/student.html';
+        } else {
+          alert('Error: ' + result.message);
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        alert('An error occurred while creating the student.');
+      }
+    });
+  </script>
+</body>
+</html>

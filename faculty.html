@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Faculty</title>
+    <link rel="stylesheet" href="Style/faculty.css">
+</head>
+<body>
+    <header>
+        <div class="logo">CourseSphere</div>
+        <nav>
+            <ul>
+                <li>Institute</li>
+                <li>Academic Schedule</li>
+                <li>Academic Functions</li>
+                <li>Contact Mentor</li>
+                <li>Contact Support</li>
+            </ul>
+        </nav>
+        <div class="profile">Nishtha Phutela<div class="profile-pic-1"></div></div>
+    </header>
+    <main>
+        <aside class="sidebar">
+            <div class="profile-card">
+                <div class="profile-pic"></div>
+                <h2>Nishtha Phutela</h2>
+                <p>Designation : Associate Professor</p>
+                <p>Department : SOET (CSE)</p><br>
+            </div>
+            <nav class="menu">
+                <ul>
+                    <li>Dashboard</li>
+                    <li>Profile</li>
+                    <li>Assigned Courses</li>
+                    <li>Manage Assignments</li>
+                    <li>Evaluate Submissions</li>
+                    <li>Schedule Exams</li>
+                    <li>Manage Grades</li>
+                    <li>Class Curriculum</li>
+                    <li>Updates</li>
+                </ul>
+            </nav>
+        </aside>
+        <section class="content">
+            <div class="cards">
+                <div class="card red">Announcement<br>-----</div>
+                <div class="card gold">Evaluations<br>-----</div>
+                <div class="card blue">Manage Attendance<br>-----</div>
+            </div>
+
+            <div class="schedule-container">
+                <div class="schedule-header">Today's Schedule</div>
+                <div class="slot">
+                    <h3>Slot 1 | 10:45 AM - 11:30 AM</h3>
+                    <p><strong>Course:</strong> DBMS 2021</p>
+                    <p><strong>Topic:</strong> Unit2: SQL Basics</p>
+                    <p><strong>Classroom:</strong> NB 101</p>
+                </div>
+                <div class="slot">
+                    <h3>Slot 2 | 1:15 PM - 3:30 PM</h3>
+                    <p><strong>Course:</strong> SE 2023</p>
+                    <p><strong>Topic:</strong> Unit2: Use Case Diagram</p>
+                    <p><strong>Classroom:</strong> GA 203</p>
+                </div>
+                <div class="slot">
+                    <h3>Slot 3 | 3:45 PM - 5:10 PM</h3>
+                    <p><strong>Course:</strong> ML 2023</p>
+                    <p><strong>Topic:</strong> Unit2: Linear Regression</p>
+                    <p><strong>Classroom:</strong> NB 210</p>
+                </div>
+                <div class="footer"><br>Your Day Ends Here, Enjoy Your Day :)</div>
+            </div>
+
+            <div class="due-container">
+                <h2>What's Due</h2>
+                <p class="subtitle">Sometimes “Later” Becomes “Never” Go Now</p>
+                <div class="table">
+                    <div class="table-header">
+                        <span>Course | Topic</span>
+                        <span>Due Date</span>
+                        <span>Action :</span>
+                    </div>
+                    <hr>
+                    <div class="table-row">
+                        <span>Maths 101: Linear Equations</span>
+                        <span>25 Feb 2025</span>
+                        <span class="action">&#x22EE;</span>
+                    </div>
+                    <hr>
+                    <div class="table-row">
+                        <span>Operating System 102: Bankers Algorithm</span>
+                        <span>27 Feb 2025</span>
+                        <span class="action">&#x22EE;</span>
+                    </div>
+                    <hr>
+                    <div class="table-row">
+                        <span>Java Programming 103: Java Exceptions</span>
+                        <span>3 Mar 2025</span>
+                        <span class="action">&#x22EE;</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="assessment-container">
+                <h2>My Courses</h2>
+                <p class="subtitle">Courses’ Assessment</p>
+                <div class="table">
+                    <div class="table-header">
+                        <span>Type</span>
+                        <span>Course | Topic</span>
+                        <span>Due Date</span>
+                        <span>Status</span>
+                    </div>
+                    <hr>
+                    <div class="table-row">
+                        <span class="type"><img src="/img/quiz.png" alt="Quiz"> Quiz</span>
+                        <span>DBMS (Database Management System)</span>
+                        <span>2 March 2025</span>
+                        <span><span class="status available">Available</span> <button class="start-btn">Start</button></span>
+                    </div>
+                    <hr>
+                    <div class="table-row">
+                        <span class="type"><img src="/img/Assignment_logo.jpg" alt="Assignment"> Assignment</span>
+                        <span>SE (Software Engineering)</span>
+                        <span>17 February 2025</span>
+                        <span><span class="status submitted">Submitted</span> <button class="view-btn">View</button></span>
+                    </div>
+                    <hr>
+                    <div class="table-row">
+                        <span class="type"><img src="/img/Assignment_logo.jpg" alt="Assignment"> Assignment</span>
+                        <span>ML (Machine Learning)</span>
+                        <span>24 March 2025</span>
+                        <span><span class="status end-soon">End soon</span> <button class="solve-btn">Solve</button></span>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    <script src="js/faculty-dashboard.js"></script>
+</body>
+</html>

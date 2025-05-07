@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Update Student</title>
+  <link rel="stylesheet" href="updatestudent.css" />
+  <div class="form-nav">
+    <a href="createstudent.html">Create Student</a>
+    <a href="updatestudent.html">Update Student</a>
+    <a href="deletestudent.html">Delete Student</a>
+    <a href="login.html">Login</a>
+  </div>
+
+</head>
+<body>
+  <h1>Update Student</h1>
+  <form id="updateStudentForm">
+    <label for="email">Email (required):</label>
+    <input type="email" id="email" name="email" required><br><br>
+
+    <label for="name">Name:</label>
+    <input type="text" id="name" name="name"><br><br>
+
+    <label for="rollNumber">Roll Number:</label>
+    <input type="text" id="rollNumber" name="rollNumber"><br><br>
+
+    <label for="course">Course:</label>
+    <input type="text" id="course" name="course"><br><br>
+
+    <label for="year">Year:</label>
+    <input type="number" id="year" name="year"><br><br>
+
+    <label for="attendance">Attendance:</label>
+    <input type="number" id="attendance" name="attendance" min="0" max="100" placeholder="e.g. 0, 50, 75"><br><br>
+
+    <button type="submit">Update Student</button>
+  </form>
+
+  <script>
+    document.getElementById('updateStudentForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const studentEmail = document.getElementById('email').value.trim();
+      if (!studentEmail) {
+        alert('Email is required.');
+        return;
+      }
+
+      const fields = ['name', 'rollNumber', 'course', 'year', 'attendance'];
+      const updatedData = {};
+
+      fields.forEach(field => {
+        const value = document.getElementById(field).value.trim();
+        if (value) updatedData[field] = field === 'year' || field === 'attendance' ? Number(value) : value;
+      });
+
+      if (Object.keys(updatedData).length === 0) {
+        alert('Please fill at least one field to update.');
+        return;
+      }
+
+      console.log('Sending the following data:', updatedData);
+
+      try {
+        const response = await fetch(`http://localhost:5000/api/students/email/${encodeURIComponent(studentEmail)}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(updatedData),
+        });
+
+        const data = await response.json();
+        if (response.ok) {
+          alert('Student updated successfully!');
+        } else {
+          alert('Error: ' + (data.message || data.error || 'Unknown error'));
+          console.error('Server Response:', data);
+        }
+      } catch (error) {
+        console.error('Update Error:', error);
+        alert('An error occurred while updating. Please check the console for more details.');
+      }
+    });
+  </script>
+</body>
+</html>

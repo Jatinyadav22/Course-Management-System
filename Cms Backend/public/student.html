@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Student</title>
+    <link rel="stylesheet" href="student.css">
+</head>
+<body>
+    <header>
+        <div class="logo">CourseSphere</div>
+        <nav>
+            <ul>
+                <li>Institute</li>
+                <li>Academic Schedule</li>
+                <li>Academic Functions</li>
+                <li>Contact Mentor</li>
+                <li>Contact Support</li>
+            </ul>
+        </nav>
+        <div class="profile" id="profileName">Loading...</div>
+    </header>
+    <main>
+        <aside class="sidebar">
+            <div class="profile-card">
+                <div class="profile-pic" id="profilePic"></div>
+                <h2 id="studentName">Loading...</h2>
+                <p id="rollNo">Loading...</p>
+                <p id="year">Loading...</p>
+                <p id="course">Loading...</p>
+            </div>
+            <nav class="menu">
+                <ul>
+                    <li>Dashboard</li>
+                    <li>Profile</li>
+                    <li>Enrolled Courses</li>
+                    <li>Syllabus</li>
+                    <li>Schedule</li>
+                    <li>Assignments</li>
+                    <li>Grades</li>
+                    <li>Updates (1)</li>
+                </ul>
+            </nav>
+        </aside>
+        <section class="content">
+            <div class="cards">
+                <div class="card red" id="announcementCard">Announcement<br>-----</div>
+                <div class="card gold" id="attendanceCard">Attendance<br>-----</div>
+                <div class="card blue" id="assignmentsCard">Assignments<br>-----</div>
+                <div class="card dark-blue" id="feedbackCard">Feedback<br>-----</div>
+            </div>
+            <div class="schedule">
+                <button class="schedule-btn">Today's Schedule</button>
+                <div class="schedule-content">
+                    <p>1. Data Structures & Algorithms (CSE2711) <br><br>
+                        &nbsp;&nbsp;&nbsp;  Time: 10:00 AM - 11:30 AM <br>
+                        &nbsp;&nbsp;&nbsp;  Room: NB-204 <br>
+                        &nbsp;&nbsp;&nbsp;  Professor: Ms. Nishtha Phutela</p>
+                </div>
+            </div>
+
+            <!-- New Section for Grades -->
+            <div class="grades">
+                <h3>Subject-wise Grades</h3>
+                <ul id="gradesList">
+                    <!-- Grades will be dynamically added here -->
+                </ul>
+            </div>
+        </section>
+    </main>
+    <script>
+        window.onload = async function () {
+            const studentId = localStorage.getItem('studentId');
+            
+            if (!studentId) {
+                alert("You are not logged in! Please log in first.");
+                window.location.href = '/login.html';
+                return;
+            }
+
+            try {
+                // Fetch student data using studentId
+                const response = await fetch(`http://localhost:5000/api/students/${studentId}`);
+                const studentData = await response.json();
+
+                if (response.ok) {
+                    // Update the profile and dashboard with student data
+                    document.getElementById('studentName').textContent = studentData.name || 'No name available';
+                    document.getElementById('rollNo').textContent = `Roll No.: ${studentData.rollNumber || 'N/A'}`;
+                    document.getElementById('year').textContent = `Year: ${studentData.year || 'N/A'}`;
+                    document.getElementById('course').textContent = `${studentData.course || 'N/A'}`;
+                    
+                    // Assuming `profilePic` is a URL to an image, update profile picture
+                    if (studentData.profilePic) {
+                        document.getElementById('profilePic').style.backgroundImage = `url(${studentData.profilePic})`;
+                    } else {
+                        document.getElementById('profilePic').style.backgroundColor = '#ccc'; // Default placeholder
+                    }
+                    
+                    // Assignments, Attendance, and other cards can be populated similarly
+                    document.getElementById('announcementCard').innerHTML = `Announcement: ${studentData.announcement || 'No new announcements'}`;
+                    document.getElementById('attendanceCard').innerHTML = `Attendance: ${studentData.attendance || 'No attendance data'}`;
+                    document.getElementById('assignmentsCard').innerHTML = `Assignments: ${studentData.assignments || 'No new assignments'}`;
+                    document.getElementById('feedbackCard').innerHTML = `Feedback: ${studentData.feedback || 'No feedback yet'}`;
+
+                    // Display subject-wise grades
+                    const gradesList = document.getElementById('gradesList');
+                    studentData.grades.forEach(grade => {
+                        const li = document.createElement('li');
+                        li.textContent = `${grade.subject}: ${grade.grade}`;
+                        gradesList.appendChild(li);
+                    });
+
+                } else {
+                    alert("Error fetching student data: " + studentData.message);
+                }
+            } catch (error) {
+                console.error('Error fetching student data:', error);
+                alert('An error occurred while loading the dashboard.');
+            }
+        }
+    </script>
+</body>
+</html>
